@@ -5,6 +5,7 @@
 </template>
 
 <script>
+
 import todolist from './components/todolist'
 
 export default {
@@ -24,6 +25,5 @@ export default {
     color: #ECD2DF;
     background: #51788A;
     height: 100%;
-    padding-top: 50px;
 }
 </style>

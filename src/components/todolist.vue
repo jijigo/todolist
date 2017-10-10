@@ -1,7 +1,7 @@
 <template>
   <div class="todolist">
-      <h1 class="title">To Do List</h1>
-      <h3>{{ date }}</h3>
+      <h2 class="title">To Do List</h2>
+      <h4>{{ date }}</h4>
       <ul>
           <li v-for="(todo, index) in todolist" @mouseover="show_btn(index)">
               <div class="list-content">
@@ -15,9 +15,9 @@
                       <span class="icon-delete" :class="{active: index == now_active}"></span>
                   </div>
               </div>
-
           </li>
       </ul>
+      <input class="input-addItem" v-model="input_value" type="text" name="" value="">
       <button @click="add" class="btn-add">ADD</button>
 
       <!-- {{ todolist }} -->
@@ -31,7 +31,8 @@ export default {
     data () {
         return {
             todolist: [],
-            now_active: ''
+            now_active: '',
+            input_value: ''
         }
     },
     computed: {
@@ -42,18 +43,15 @@ export default {
     },
     methods: {
         add() {
-            this.todolist.push({ name: '', check: false });
+            this.todolist.push({ name: this.input_value, check: false });
+            this.input_value = '';
         },
         delete_item(index) {
-            console.log(index);
-
             this.todolist.splice(index, 1);
         },
         show_btn(index) {
-            console.log('hihi');
             this.now_active = index;
         },
-
     }
 }
 </script>
@@ -61,14 +59,35 @@ export default {
 <style lang="scss" scoped>
 
 $main-color: #ECD2DF;
+$second-color: #51788A;
 
-h1.title {
+.todolist {
+    border: 1px solid;
+    width: calc(100% - 300px);
+    margin: 0 auto;
+    padding: 30px 0;
+    border-radius: 10px;
+    transform: translateX(-50%) translateY(-50%);
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    background: $main-color;
+    color: $second-color;
+    box-shadow: 0px 10px 10px rgba(0,0,0,0.1);
+}
+
+h2.title {
+    margin: 0;
+}
+
+h4 {
     margin: 0;
 }
 
 ul {
     list-style: none;
     padding: 0;
+    min-height: 50px;
 }
 
 li {
@@ -83,7 +102,7 @@ div.list-content {
 label.label-check {
     width: 20px;
     height: 20px;
-    border: 2px solid $main-color;
+    border: 2px solid $second-color;
     border-radius: 100%;
     display: inline-block;
     margin-right: 10px;
@@ -100,7 +119,7 @@ label.label-check {
     position: absolute;
     top: 6px;
     left: 0px;
-    background: $main-color;
+    background: $second-color;
     transition: all 3s;
 
     &:after {
@@ -108,7 +127,7 @@ label.label-check {
         content: '';
         width: 20px;
         border: 1px solid;
-        background: $main-color;
+        background: $second-color;
         transform: rotate(90deg);
         top: -11px;
         left: 0;
@@ -122,43 +141,60 @@ input.checkbox-todo {
 
 input.input-todo {
     border: none;
-    border-bottom: 2px solid $main-color;
+    // border-bottom: 2px solid $second-color;
     outline: none;
-    padding: 10px;
+    padding: 5px 10px;
     font-size: 16px;
     background: transparent;
-    color: #fff;
+    color: $second-color;
     letter-spacing: 0.7px;
+    padding: 5px;
+    border-radius: 50px;
+    width: 204px;
+    font-size: 18px;
 
     &.checked {
         text-decoration: line-through;
     }
 }
 
+.input-addItem {
+    border: none;
+    border: 2px solid $second-color;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+    color: #fff;
+    letter-spacing: 0.7px;
+    padding: 5px 10px;
+    border-radius: 50px;
+
+}
+
 .delete {
     position: relative;
-    margin-left: 10px;
+    // margin-left: 10px;
     cursor: pointer;
 }
 
 .icon-delete {
-    width: 20px;
+    width: 15px;
     border: 1px solid;
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
     position: absolute;
     top: 0px;
-    left: 0px;
-    background: $main-color;
+    left: -15px;
+    background: $second-color;
     display: none;
     // transition: all 3s;
 
     &:after {
         position: absolute;
         content: '';
-        width: 20px;
+        width: 15px;
         border: 1px solid;
-        background: $main-color;
+        background: $second-color;
         transform: rotate(90deg);
         top: -1px;
         left: -1px;
@@ -172,14 +208,15 @@ input.input-todo {
 
 .btn-add {
     margin: 0 auto;
-    display: block;
-    border: 2px solid $main-color;
-    color: $main-color;
+    border: 2px solid $second-color;
+    color: $second-color;
     background: transparent;
-    padding: 5px 10px;
+    padding: 10px 10px;
     font-size: 16px;
     outline: none;
     cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 30px;
 }
 
 </style>
