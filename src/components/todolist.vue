@@ -1,9 +1,9 @@
 <template>
   <div class="todolist">
-      <h2>To Do List</h2>
-      <h4>{{ date }}</h4>
+      <h1 class="title">To Do List</h1>
+      <h3>{{ date }}</h3>
       <ul>
-          <li v-for="(todo, index) in todolist">
+          <li v-for="(todo, index) in todolist" @mouseover="show_btn(index)">
               <div class="list-content">
                   <label class="label-check" :for="'checkbox_todo_' + index">
                       <div class="check" v-if="todo.check"></div>
@@ -12,7 +12,7 @@
                   <input class="input-todo" :class="{'checked': todo.check}" type="text" name="todolist[]" v-model="todo.name">
 
                   <div class="delete" @click="delete_item(index)">
-                      X
+                      <span class="icon-delete" :class="{active: index == now_active}"></span>
                   </div>
               </div>
 
@@ -30,7 +30,8 @@ export default {
     name: 'todolist',
     data () {
         return {
-            todolist: []
+            todolist: [],
+            now_active: ''
         }
     },
     computed: {
@@ -48,12 +49,22 @@ export default {
 
             this.todolist.splice(index, 1);
         },
+        show_btn(index) {
+            console.log('hihi');
+            this.now_active = index;
+        },
 
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
+$main-color: #ECD2DF;
+
+h1.title {
+    margin: 0;
+}
 
 ul {
     list-style: none;
@@ -72,7 +83,7 @@ div.list-content {
 label.label-check {
     width: 20px;
     height: 20px;
-    border: 2px solid #ECD2DF;
+    border: 2px solid $main-color;
     border-radius: 100%;
     display: inline-block;
     margin-right: 10px;
@@ -80,6 +91,7 @@ label.label-check {
     transition: all 3s;
 }
 
+// 打勾符號
 .check {
     width: 10px;
     border: 1px solid;
@@ -88,44 +100,81 @@ label.label-check {
     position: absolute;
     top: 6px;
     left: 0px;
-    background: #ECD2DF;
+    background: $main-color;
     transition: all 3s;
-}
-.check::after {
-    position: absolute;
-    content: '';
-    width: 20px;
-    border: 1px solid;
-    background: #ECD2DF;
-    transform: rotate(90deg);
-    top: -11px;
-    left: 0;
+
+    &:after {
+        position: absolute;
+        content: '';
+        width: 20px;
+        border: 1px solid;
+        background: $main-color;
+        transform: rotate(90deg);
+        top: -11px;
+        left: 0;
+    }
 }
 
+// 原生的checkbox隱藏
 input.checkbox-todo {
     display: none;
 }
 
 input.input-todo {
     border: none;
-    border-bottom: 2px solid #ECD2DF;
+    border-bottom: 2px solid $main-color;
     outline: none;
     padding: 10px;
     font-size: 16px;
     background: transparent;
     color: #fff;
     letter-spacing: 0.7px;
+
+    &.checked {
+        text-decoration: line-through;
+    }
 }
 
-input.input-todo.checked {
-    text-decoration: line-through;
+.delete {
+    position: relative;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.icon-delete {
+    width: 20px;
+    border: 1px solid;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: $main-color;
+    display: none;
+    // transition: all 3s;
+
+    &:after {
+        position: absolute;
+        content: '';
+        width: 20px;
+        border: 1px solid;
+        background: $main-color;
+        transform: rotate(90deg);
+        top: -1px;
+        left: -1px;
+    }
+
+    &.active {
+        display: block;
+    }
+
 }
 
 .btn-add {
     margin: 0 auto;
     display: block;
-    border: 2px solid #ECD2DF;
-    color: #fff;
+    border: 2px solid $main-color;
+    color: $main-color;
     background: transparent;
     padding: 5px 10px;
     font-size: 16px;
