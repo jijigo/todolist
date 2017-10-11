@@ -2,21 +2,21 @@
   <div class="todolist">
       <h2 class="title">To Do List</h2>
       <h4>{{ date }}</h4>
-      <ul>
-          <li v-for="(todo, index) in todolist" @mouseover="show_btn(index)">
-              <div class="list-content">
-                  <label class="label-check" :for="'checkbox_todo_' + index">
-                      <div class="check" v-if="todo.check"></div>
-                      <input class="checkbox-todo" :id="'checkbox_todo_' + index"  type="checkbox" name="" v-model="todo.check">
-                  </label>
-                  <input class="input-todo" :class="{'checked': todo.check}" type="text" name="todolist[]" v-model="todo.name">
+          <transition-group tag="ul" name="list" class="list">
+              <li v-for="(todo, index) in todolist" class="list__item" :key="index" @mouseover="show_btn(index)">
+                  <div class="list-content">
+                      <label class="label-check" :for="'checkbox_todo_' + index">
+                          <div class="check" v-if="todo.check"></div>
+                          <input class="checkbox-todo" :id="'checkbox_todo_' + index"  type="checkbox" name="" v-model="todo.check">
+                      </label>
+                      <input class="input-todo" :class="{'checked': todo.check}" type="text" name="todolist[]" v-model="todo.name">
 
-                  <div class="delete" @click="delete_item(index)">
-                      <span class="icon-delete" :class="{active: index == now_active}"></span>
+                      <div class="delete" @click="delete_item(index)">
+                          <span class="icon-delete" :class="{active: index == now_active}" @click="delete_item(index)"></span>
+                      </div>
                   </div>
-              </div>
-          </li>
-      </ul>
+              </li>
+          </transition-group>
       <input class="input-addItem" v-model="input_value" type="text" name="" value="">
       <button @click="add" class="btn-add">ADD</button>
 
@@ -43,8 +43,10 @@ export default {
     },
     methods: {
         add() {
-            this.todolist.push({ name: this.input_value, check: false });
-            this.input_value = '';
+            if(this.input_value !== '') {
+                this.todolist.push({ name: this.input_value, check: false });
+                this.input_value = '';
+            }
         },
         delete_item(index) {
             this.todolist.splice(index, 1);
@@ -76,6 +78,20 @@ $second-color: #51788A;
     box-shadow: 0px 10px 10px rgba(0,0,0,0.1);
 }
 
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
 h2.title {
     margin: 0;
 }
@@ -84,14 +100,21 @@ h4 {
     margin: 0;
 }
 
-ul {
+ul.list {
     list-style: none;
     padding: 0;
     min-height: 50px;
+
+
+    &.__item {
+        height: 100px;
+        color: #000;
+    }
 }
 
 li {
     margin: 5px;
+    transition: 250ms ease-out;
 }
 
 div.list-content {
@@ -149,7 +172,7 @@ input.input-todo {
     color: $second-color;
     letter-spacing: 0.7px;
     padding: 5px;
-    border-radius: 50px;
+    border-radius: 30px;
     width: 204px;
     font-size: 18px;
 
@@ -167,13 +190,12 @@ input.input-todo {
     color: #fff;
     letter-spacing: 0.7px;
     padding: 5px 10px;
-    border-radius: 50px;
+    border-radius: 30px;
 
 }
 
 .delete {
     position: relative;
-    // margin-left: 10px;
     cursor: pointer;
 }
 
@@ -217,6 +239,12 @@ input.input-todo {
     cursor: pointer;
     padding: 5px 10px;
     border-radius: 30px;
+    transition: 1s;
+
+    &:hover {
+        background: $second-color;
+        color: #fff;
+    }
 }
 
 </style>
