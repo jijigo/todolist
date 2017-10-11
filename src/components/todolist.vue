@@ -9,7 +9,7 @@
                           <div class="check" v-if="todo.check"></div>
                           <input class="checkbox-todo" :id="'checkbox_todo_' + index"  type="checkbox" name="" v-model="todo.check">
                       </label>
-                      <input class="input-todo" :class="{'checked': todo.check}" type="text" name="todolist[]" v-model="todo.name">
+                      <input class="input-todo" :class="{'checked': todo.check}" type="text" name="todolist[]" v-model="todo.name" >
 
                       <div class="delete" @click="delete_item(index)">
                           <span class="icon-delete" :class="{active: index == now_active}" @click="delete_item(index)"></span>
@@ -17,7 +17,7 @@
                   </div>
               </li>
           </transition-group>
-      <input class="input-addItem" v-model="input_value" type="text" name="" value="">
+      <input class="input-addItem" v-model="input_value" @keyup.enter="add" type="text" name="" value="">
       <button @click="add" class="btn-add">ADD</button>
 
       <!-- {{ todolist }} -->
@@ -65,7 +65,7 @@ $second-color: #51788A;
 
 .todolist {
     border: 1px solid;
-    width: calc(100% - 300px);
+    width: 400px;
     margin: 0 auto;
     padding: 30px 0;
     border-radius: 10px;
